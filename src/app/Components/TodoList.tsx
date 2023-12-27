@@ -3,27 +3,43 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Plus } from 'lucide-react';
+import ViewTodo from './ViewTodo';
 
-type Props = {};
+type Props = {
+    todoList: any
+};
 
 export default function TodoLost({ }: Props) {
-    const [todoItem, setTodotItem] = useState("");
+    const [todoItem, setTodoItem] = useState("");
+    const [todoList, setTodoList] = useState("")
+    const [isloading, setIsLoading] = useState(false)
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTodotItem(e.currentTarget.value)
+    const getTodo = async () => {
+        setIsLoading(true);
+        const response = await fetch("/api/todo");
+        const res = await response.json()
+        setTodoList(res.message)
+        console.log("after loading", res)
+        setIsLoading(false);
     }
 
+    useEffect(() => {
+        getTodo();
+    }, []);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTodoItem(e.currentTarget.value);
+    };
     const handleAddTodo = async () => {
         const response = await fetch("/api/todo", {
             method: "POST",
-            body: JSON.stringify({ todoItem })
+            body: JSON.stringify({ todoItem }),
         });
-
-        const res = await response.json()
-        console.log(res)
-    }
+        const res = await response.json();
+        getTodo()
+    };
 
     return (
         <div className='flex justify-center items-center'>
@@ -42,6 +58,13 @@ export default function TodoLost({ }: Props) {
                         Add Todo
                     </Button>
                 </div>
+                {isloading ? (<div>Loading....</div>):
+                    todoList.length > 0 ? (
+                <ViewTodo todoList={todoList} />
+                ) : (
+                <div className='text-center p-5 font-poppins'>No Todo Found!</div>
+                )    
+            }
             </div>
         </div>
     )
