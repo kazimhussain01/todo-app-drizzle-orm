@@ -12,7 +12,7 @@ export default function ViewTodo({ todoList }: Props) {
             {
                 todoList.map((item: any, index: number) => {
                     return (
-                        <div className='mt-6' id={item.id}>
+                        <div key={index} className='mt-6' id={item.id}>
                             <div className='px-5 py-3 bg-slate-900 text-white flex justify-between items-center rounded-md'>
                                 <div>
                                     <span className='text-sm'>{item.title}</span>

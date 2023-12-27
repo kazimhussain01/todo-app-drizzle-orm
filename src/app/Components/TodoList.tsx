@@ -58,13 +58,13 @@ export default function TodoLost({ }: Props) {
                         Add Todo
                     </Button>
                 </div>
-                {isloading ? (<div>Loading....</div>):
+                {isloading ? (<div>Loading....</div>) :
                     todoList.length > 0 ? (
-                <ViewTodo todoList={todoList} />
-                ) : (
-                <div className='text-center p-5 font-poppins'>No Todo Found!</div>
-                )    
-            }
+                        <ViewTodo todoList={todoList} />
+                    ) : (
+                        <div className='text-center p-5 font-poppins'>No Todo Found!</div>
+                    )
+                }
             </div>
         </div>
     )
